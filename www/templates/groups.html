@@ -1,0 +1,31 @@
+<ion-view view-title="Groups">
+
+  <ion-nav-buttons side="secondary">
+    <button class="button button-clear" ng-click="newGroup()">
+      <i class="icon ion-plus-circled light"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content class="">
+
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="group in groups" type="item-text-wrap" href="#/tab/group/{{group._id}}">
+        <img ng-src="img/anonymous-picture.png">
+        <h2>{{group.title}}</h2>
+        <p>
+          <!--<span class="badge badge-assertive">3</span>-->
+          <b ng-show="isAdmin(group._id)">(A)</b>
+          <span ng-show="group.private == 'false'">Open Group</span>
+        </p>
+
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(group)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+</ion-view>

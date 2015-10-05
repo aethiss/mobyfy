@@ -1,0 +1,95 @@
+<ion-modal-view view-title="">
+
+    <ion-header-bar class="fb-color-bk">
+        <h1 class="title white-font">{{getTitle()}} <ion-spinner ng-if="getTitle() == 'Loading'" icon='dots' class="spinner-light"></ion-spinner></h1>
+        <div class="buttons">
+            <button class="button icon-bar" ng-click="closeEvent()">
+                <i class="icon ion-close-circled assertive"></i>
+            </button>
+        </div>
+    </ion-header-bar>
+
+    <ion-content class="padding scroll">
+
+
+        <div class="item-image" id="map_canvas" ng-show="showMap">
+            <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options">
+                <script type="text/ng-template" id="searchbox.tpl.html">
+                    <input id="searchform" class="small-form" type="text" placeholder="Where" ng-controller="searchBoxCtrl" ng-model="mapsData.places" ng-change="loadPlaces()" ng-focus="disableTap()">
+                </script>
+                <ui-gmap-search-box template="searchbox.template" events="searchbox.events" position="'BOTTOM_LEFT'"></ui-gmap-search-box>
+                <!--<ui-gmap-search-box options="searchbox.options" template="searchbox.template" events="searchbox.events" parentdiv="'searchbox'"></ui-gmap-search-box>-->
+                <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id"></ui-gmap-marker>
+            </ui-gmap-google-map>
+        </div>
+
+        <!--<div id="maploader" class="item" style="display: none">-->
+            <!--<ion-spinner icon="spiral"></ion-spinner>-->
+        <!--</div>-->
+
+        <!--<div id="searchbox" class="">-->
+            <!--<script type="text/ng-template" id="searchbox.tpl.html">-->
+                <!--<input id="searchform" class="small-form" type="text" placeholder="Where" ng-controller="searchBoxCtrl" ng-focus="disableTap()">-->
+            <!--</script>-->
+        <!--</div>-->
+
+        <!-- List of places -->
+        <div class="list" ng-show="places.length > 0">
+
+            <label ng-repeat="place in places" class="item item-radio">
+
+                <input type="radio" name="group" ng-click="selectPlace(place, $index)">
+
+                <div class="item-icon-left item-avatar-left" style="float: left; display:block; width:20%;">
+                    <img id="profile-image" ng-src="{{place.icon}}" class="mini-icon" />
+                </div>
+                <div class="item-content" style="float: left; display:block; width:80%;">
+                    <h3>{{place.name}}</h3>
+                    <p>{{place.formatted_address}}</p>
+                    <i class="radio-icon ion-checkmark"></i>
+                </div>
+
+                <div style="clear: both;"></div>
+
+                <div class="placedetails" id="details{{$index}}" style="height: 150px; overflow: hidden; display: none;">
+                    <img ng-src="http://maps.googleapis.com/maps/api/staticmap?center={{place.geometry.location.lat()}},{{place.geometry.location.lng()}}&zoom=15&size=400x150&maptype=roadmap&key=AIzaSyBSr910zvPL8mdDihtNda2Du381hDP8wGY" class="maps-image" >
+                    <img ng-src="img/maps/markerBlue.png" class="marker-image" >
+                    <img ng-if="typeof (place.photos) != 'undefined'" ng-src="{{place.photos[0].getUrl({'maxWidth': 130, 'maxHeight': 80})}}" style="z-index: 100;" class="place-image" >
+                </div>
+
+
+            </label>
+
+        </div>
+
+
+        <div class="list padding-top" ng-if="places.length == 1">
+
+            <div class="item item-icon-left dark">
+                <i class="icon ion-flag" ng-class="{'assertive': isEmpty(event.name) && submitted}"></i>
+                <input type="text" class="dark-border search-card small-form" ng-model="event.name" placeholder=" Event Title">
+            </div>
+
+            <div class="item item-icon-left dark">
+                <i class="icon ion-ios-information" ng-class="{'assertive': isEmpty(event.details) && submitted}"></i>
+                <textarea class="dark-border search-card" ng-model="event.details" placeholder=" Event Details"></textarea>
+            </div>
+
+            <div class="item item-icon-left dark">
+                <i class="icon ion-calendar" ng-class="{'assertive': submitted && !isDate(event.date)}"></i>
+                <input type="date" class="dark-border search-card small-form" ng-model="event.date" placeholder=" When" ng-focus="openPicker()">
+            </div>
+
+        </div>
+
+    </ion-content>
+
+    <ion-footer-bar ng-if="places.length > 1">
+        <button class="button button-full button-positive adjust-button" ng-click="confirmPlace()">Select Place</button>
+    </ion-footer-bar>
+
+    <ion-footer-bar ng-if="places.length == 1">
+        <button class="button button-full button-positive adjust-button" ng-click="confirmEvent()">Create Event</button>
+    </ion-footer-bar>
+
+</ion-modal-view>

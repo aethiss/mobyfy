@@ -1,0 +1,93 @@
+<ion-modal-view>
+
+    <ion-header-bar class="">
+        <h1 class="title white-font">Create New Group</h1>
+        <button class="button icon-bar" ng-click="closeNewGroup()">
+            <i class="icon ion-close-circled assertive"></i>
+        </button>
+    </ion-header-bar>
+
+    <ion-content>
+
+        <ion-pane class="text-center padding">
+
+            <form ng-submit="createGroup()" novalidate>
+                <div class="list">
+
+                    <div class="item item-avatar-left">
+                        <img ng-src="{{groupData.image}}" />
+                        <span class="full-input">
+                            Add Group Title and (optional) image.
+                        </span>
+                    </div>
+
+                    <div class="item item-icon-left">
+                        <i class="icon ion-ios-pricetags" ng-class="{'assertive': (!validateName() && submitted)}"></i>
+                        <input type="text" class="item-input full-input" name="title" placeholder="Group Title" ng-model="groupData.title">
+                    </div>
+
+                    <div class="item item-toggle item-icon-left divided-item">
+                        <i ng-show="isOpen()" class="icon ion-eye-disabled"></i>
+                        <i ng-show="!isOpen()" class="icon ion-eye"></i>
+                        <span ng-show="!isOpen()">Open Group</span>
+                        <span ng-show="isOpen()">Private Group</span>
+                        <label class="toggle toggle-assertive" ng-checked="setJoin()">
+                            <input type="checkbox" ng-model="groupData.private">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="item item-toggle item-icon-left divided-item">
+                        <i ng-show="isFree()" class="icon ion-paper-airplane"></i>
+                        <i ng-show="!isFree()" class="icon ion-person-stalker"></i>
+                        <span ng-show="isFree()">Invite Only</span>
+                        <span ng-show="!isFree()">Friends Can Join</span>
+                        <label class="toggle toggle-assertive">
+                            <input type="checkbox" ng-model="groupData.invite">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="card">
+                        <div class="item item-text-wrap text-info">
+                            <span ng-show="!isOpen()">
+                                <i class="icon ion-information-circled"></i>
+                                Open Group: All friends of group people can see Events from that Group {{groupData.title}}
+                            </span>
+                            <span ng-show="isOpen()">
+                                <i class="icon ion-information-circled"></i>
+                                Private Group: Events are visible only if shared from that Group {{groupData.title}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="item item-text-wrap text-info">
+                            <span ng-show="!isFree()">
+                                <i class="icon ion-information-circled"></i>
+                                Friends Can Join: All friend to partecipants of that group can join!
+                            </span>
+                            <span ng-show="isFree()">
+                                <i class="icon ion-information-circled"></i>
+                                Invite Only: Only Administrators can invite!
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="bar bar-footer modal-footer">
+                    <button class="button icon-left button-block">
+                        <i class="icon ion-plus-circled balanced"></i> Create Group
+                    </button>
+                </div>
+            </form>
+
+        </ion-pane>
+
+    </ion-content>
+</ion-modal-view>
